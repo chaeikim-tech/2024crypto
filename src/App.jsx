@@ -1,6 +1,6 @@
-import { Router } from 'react-router-dom';
 import React from 'react';
 import { createGlobalStyle } from "styled-components";
+import NavBar from './components/NavBar';
 
 const GlobalStyle = createGlobalStyle`
   /* http://meyerweb.com/eric/tools/css/reset/ 
@@ -65,9 +65,7 @@ function App() {
   return (
     <>
       <GlobalStyle />
-      <div>
-        Test
-      </div>
+      <NavBar />
     </>
   );
 }
