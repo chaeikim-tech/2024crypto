@@ -1,6 +1,11 @@
 import React from 'react';
 import { createGlobalStyle } from "styled-components";
 import NavBar from './components/NavBar';
+import { Route, Routes } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from "react-query/devtools";
+import Home from './components/Home';
+import Coin from './components/Coin';
 
 const GlobalStyle = createGlobalStyle`
   /* http://meyerweb.com/eric/tools/css/reset/ 
@@ -61,12 +66,20 @@ table {
 }
 `;
 
+const queryClient = new QueryClient();
+
 function App() {
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <GlobalStyle />
+      <ReactQueryDevtools initialIsOpen={true} />
       <NavBar />
-    </>
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/:coinId' element={<Coin />} />
+        {/* <Route path='/coin/:coinId' element={<Coins />} /> */}
+      </Routes>
+    </QueryClientProvider>
   );
 }
 
