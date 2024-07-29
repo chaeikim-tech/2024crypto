@@ -13,6 +13,11 @@ const TableLayout = styled(Link)`
         padding: 15px 20px;
         align-items: center;
         border-bottom: 1px solid #3c3c3c;
+        div{
+          display: flex;
+          justify-content:flex-start;
+          align-items: center;
+        }
         img{
             width:30px;
             height: 30px;
@@ -25,20 +30,22 @@ const TableLayout = styled(Link)`
 function Coins() {
 
   const { isLoading: isListLoading, data: listData } = useQuery("allCoins", fetchCoins);
-  //const { isLoading: isImgLoading, data: imgData } = useQuery("coinImg", fetchCoinInfo(coinId));
 
   return (
     <>
       {isListLoading ? (
         <h1>Loading...</h1>
       ) : (
-        listData?.slice(0, 100).map((coin) => (
-          <TableLayout key={coin.id} to={`/${coin.id}`} state={coin.name}>
-            <p>{coin.rank}</p>
-            <p>{coin.name}</p>
-            <p>{coin.symbol}</p>
-            <p style={{ textAlign: "center" }}></p>
-            <p style={{ textAlign: "right" }}></p>
+        listData?.map((coin) => (
+          <TableLayout key={coin.id} to={`/${coin.id}`} state={{ marketCap: `${coin.market_cap}`, marketRank: `${coin.market_cap_rank}`, currentPrice: `${coin.current_price}`, coinName: `${coin.name}`, coinImg: `${coin.image}` }}>
+            <p>{coin.market_cap_rank}</p>
+            <div>
+              <img src={coin.image} alt={coin.name} />
+              {coin.name}
+            </div>
+            <p>{coin.symbol.toUpperCase()}</p>
+            <p style={{ textAlign: "center" }}>{(coin.high_24h).toLocaleString('ko-KR')}</p>
+            <p style={{ textAlign: "right" }}>{(coin.low_24h).toLocaleString('ko-KR')}</p>
           </TableLayout>
         ))
       )}

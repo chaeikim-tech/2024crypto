@@ -90,7 +90,7 @@ function Home() {
                 <div className='table-layout'>
                     <p>#</p>
                     <p>Coins</p>
-                    <p>Price</p>
+                    <p>Symbol</p>
                     <p style={{ textAlign: "center" }}>HIGH 24HOUR</p>
                     <p style={{ textAlign: "right" }}>LOW 24HOUR</p>
                 </div>

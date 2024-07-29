@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+
 
 const Wrapper = styled.div`
     display: flex;
@@ -19,7 +21,7 @@ const Wrapper = styled.div`
 `;
 
 const Logo = styled.h1`
-    color: red;
+    color: #4A4E69;
     font-size: max(2.5vw, 25px);
     font-weight: 600;
 `;
@@ -44,7 +46,9 @@ const Money = styled.div`
 function NavBar() {
     return (
         <Wrapper>
-            <Logo>Cypto</Logo>
+            <Link to="/">
+                <Logo>Crypto</Logo>
+            </Link>
             <ul>
                 <li>Home</li>
                 <li>Price</li>
