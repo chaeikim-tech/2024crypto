@@ -3,9 +3,8 @@ import { createGlobalStyle } from "styled-components";
 import NavBar from './components/NavBar';
 import { Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { ReactQueryDevtools } from "react-query/devtools";
-import Home from './components/Home';
-import Coin from './components/Coin';
+import Home from './routes/Home';
+import Coin from './routes/Coin';
 
 const GlobalStyle = createGlobalStyle`
   /* http://meyerweb.com/eric/tools/css/reset/ 
@@ -72,7 +71,6 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <GlobalStyle />
-      <ReactQueryDevtools initialIsOpen={true} />
       <NavBar />
       <Routes>
         <Route path='/' element={<Home />} />

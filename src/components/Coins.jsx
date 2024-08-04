@@ -37,7 +37,7 @@ function Coins() {
         <h1>Loading...</h1>
       ) : (
         listData?.map((coin) => (
-          <TableLayout key={coin.id} to={`/${coin.id}`} state={{ marketCap: `${coin.market_cap}`, marketRank: `${coin.market_cap_rank}`, currentPrice: `${coin.current_price}`, coinName: `${coin.name}`, coinImg: `${coin.image}` }}>
+          <TableLayout key={coin.id} to={`/${coin.id}`} state={{ marketCap: `${coin.market_cap}`, marketRank: `${coin.market_cap_rank}`, currentPrice: `${coin.current_price}`, coinName: `${coin.name}`, coinImg: `${coin.image}`, priceChange: `${coin.price_change_24h}`, priceChangePer: `${coin.price_change_percentage_24h}`, updated: `${coin.last_updated}` }}>
             <p>{coin.market_cap_rank}</p>
             <div>
               <img src={coin.image} alt={coin.name} />
