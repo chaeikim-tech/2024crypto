@@ -1,10 +1,7 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
-import { useQuery } from 'react-query';
-import { fetchCoins } from "../api";
 import styled from 'styled-components';
-
-
+import { CoinContext } from '../context/CoinContext';
 
 
 const TableLayout = styled(Link)`
@@ -28,27 +25,27 @@ const TableLayout = styled(Link)`
 
 
 function Coins() {
+  const { allCoin, currency } = useContext(CoinContext);
+  const [displayCoin, setDisplayCoin] = useState([]);
 
-  const { isLoading: isListLoading, data: listData } = useQuery("allCoins", fetchCoins);
+  useEffect(() => {
+    setDisplayCoin(allCoin);
+  }, [allCoin])
 
   return (
     <>
-      {isListLoading ? (
-        <h1>Loading...</h1>
-      ) : (
-        listData?.map((coin) => (
-          <TableLayout key={coin.id} to={`/${coin.id}`} state={{ marketCap: `${coin.market_cap}`, marketRank: `${coin.market_cap_rank}`, currentPrice: `${coin.current_price}`, coinName: `${coin.name}`, coinImg: `${coin.image}`, priceChange: `${coin.price_change_24h}`, priceChangePer: `${coin.price_change_percentage_24h}`, updated: `${coin.last_updated}` }}>
-            <p>{coin.market_cap_rank}</p>
-            <div>
-              <img src={coin.image} alt={coin.name} />
-              {coin.name}
-            </div>
-            <p>{coin.symbol.toUpperCase()}</p>
-            <p style={{ textAlign: "center" }}>{(coin.high_24h).toLocaleString('ko-KR')}</p>
-            <p style={{ textAlign: "right" }}>{(coin.low_24h).toLocaleString('ko-KR')}</p>
-          </TableLayout>
-        ))
-      )}
+      {displayCoin?.map((coin, index) => (
+        <TableLayout key={coin.id} to={`/${coin.id}`} state={{ marketCap: `${coin.market_cap}`, marketRank: `${coin.market_cap_rank}`, currentPrice: `${coin.current_price}`, coinName: `${coin.name}`, coinImg: `${coin.image}`, priceChange: `${coin.price_change_24h}`, priceChangePer: `${coin.price_change_percentage_24h}`, updated: `${coin.last_updated}` }}>
+          <p>{coin.market_cap_rank}</p>
+          <div>
+            <img src={coin.image} alt={coin.name} />
+            {coin.name}
+          </div>
+          <p>{currency.symbol} {(coin.current_price).toLocaleString('ko-KR')}</p>
+          <p style={{ textAlign: "center" }}>{currency.symbol} {(coin.high_24h).toLocaleString('ko-KR')}</p>
+          <p style={{ textAlign: "right" }}>{currency.symbol} {(coin.low_24h).toLocaleString('ko-KR')}</p>
+        </TableLayout>
+      ))}
     </>
   )
 }

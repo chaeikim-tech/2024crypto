@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Coins from '../components/Coins';
-
+import NavBar from '../components/NavBar';
 
 
 const Wrapper = styled.div`
@@ -73,10 +73,10 @@ const CryptoList = styled.div`
 `;
 
 function Home() {
-    const apiKey = process.env.REACT_APP_API_KEY;
 
     return (
         <Wrapper>
+            <NavBar />
             <div className='hero'>
                 <h1>Largest <br /> Crypto Marketplace</h1>
                 <p>Welcome to the world's largest cryptocurrency marketplace.
@@ -90,7 +90,7 @@ function Home() {
                 <div className='table-layout'>
                     <p>#</p>
                     <p>Coins</p>
-                    <p>Symbol</p>
+                    <p>Price</p>
                     <p style={{ textAlign: "center" }}>HIGH 24HOUR</p>
                     <p style={{ textAlign: "right" }}>LOW 24HOUR</p>
                 </div>

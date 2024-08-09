@@ -1,8 +1,6 @@
 import React from 'react';
 import { createGlobalStyle } from "styled-components";
-import NavBar from './components/NavBar';
 import { Route, Routes } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from 'react-query';
 import Home from './routes/Home';
 import Coin from './routes/Coin';
 
@@ -65,19 +63,16 @@ table {
 }
 `;
 
-const queryClient = new QueryClient();
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
+    <>
       <GlobalStyle />
-      <NavBar />
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/:coinId' element={<Coin />} />
-        {/* <Route path='/coin/:coinId' element={<Coins />} /> */}
       </Routes>
-    </QueryClientProvider>
+    </>
   );
 }
 

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { CoinContext } from '../context/CoinContext';
 
 
 const Wrapper = styled.div`
@@ -43,7 +44,34 @@ const Money = styled.div`
     }
 `;
 
-function NavBar() {
+const NavBar = () => {
+    const { setCurrency } = useContext(CoinContext);
+
+    const currencyHandler = (e) => {
+        switch (e.target.value) {
+            case "krw": {
+                setCurrency({ name: "krw", symbol: "₩" });
+                console.log("krw")
+                break;
+            }
+            case "usd": {
+                setCurrency({ name: "usd", symbol: "$" });
+                console.log("usd")
+                break;
+            }
+            case "eur": {
+                setCurrency({ name: "eur", symbol: "€" });
+                console.log("eur")
+                break;
+            }
+            default: {
+                setCurrency({ name: "krw", symbol: "₩" });
+                break;
+            }
+        }
+    };
+
+
     return (
         <Wrapper>
             <Link to="/">
@@ -56,7 +84,7 @@ function NavBar() {
                 <li>Q&A</li>
             </ul>
             <Money>
-                <select className='currency'>
+                <select className='currency' onChange={currencyHandler} >
                     <option value="krw">KRW</option>
                     <option value="usd">USD</option>
                     <option value="eur">EUR</option>
