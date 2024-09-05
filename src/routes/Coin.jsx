@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import { Link, useParams, useLocation } from 'react-router-dom';
 import PriceChart from '../components/PriceChart';
 import MarketData from '../components/MarketData';
+import { CoinContext } from '../context/CoinContext';
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -49,7 +50,7 @@ const Title = styled.h1`
 
 const CoinInfo = styled.div`
   width: 100%;
-  height: 70vh;
+  height: 80vh;
   padding: 20px;
   border-radius: 15px;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.8);
@@ -83,9 +84,11 @@ const ChangePrice = styled.span`
 `
 
 function Coin() {
+  const { currency } = useContext(CoinContext);
   const { coinId } = useParams();
   const { state } = useLocation();
   const [color, setColor] = useState('blue');
+  const [historicalData, setHistoricalData] = useState({});
   let percentageFont = state.priceChangePer;
   let priceChange = state.priceChange;
   const formattedPriceChangePer = parseFloat(percentageFont).toFixed(2);
@@ -93,8 +96,14 @@ function Coin() {
   const updatedNum = state.updated;
   const formatterUpdate = updatedNum.split('T');
 
-  console.log(percentageFont);
-  console.log(state);
+  const fetchCoinChart = async () => {
+    return await fetch(`https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency.name}&days=7`)
+      .then(res => res.json())
+      .then(res => setHistoricalData(res))
+      .catch(err => console.error('error:' + err));
+  }
+
+
   useEffect(() => {
     if (Math.sign(percentageFont) === 1) {
       setColor('red');
@@ -102,6 +111,10 @@ function Coin() {
       setColor('blue');
     }
   }, [percentageFont]);
+
+  useEffect(() => {
+    fetchCoinChart(coinId, currency);
+  }, [coinId, currency])
 
 
   return (
@@ -124,10 +137,10 @@ function Coin() {
           <ChangePrice style={{ color }}>{formattedPriceChangePer.replace('-', '▼')}%</ChangePrice>
         </CoinInfoHeader>
         <CoinPrice>
-          <p>현재가 : ₩ {Number(state.currentPrice).toLocaleString('ko-KR')} KRW</p>
-          <ChangePrice style={{ color }}>₩{Number(formattedPrice).toLocaleString('ko-KR')}</ChangePrice>
+          <p>현재가 : {currency.symbol} {Number(state.currentPrice).toLocaleString('ko-KR')} {(currency.name).toUpperCase()}</p>
+          <ChangePrice style={{ color }}> {currency.symbol} {Number(formattedPrice).toLocaleString('ko-KR')}</ChangePrice>
         </CoinPrice>
-        <PriceChart />
+        <PriceChart coinId={coinId} historicalData={historicalData} />
         <MarketData coin={{ marketCap: state.marketCap, marketRank: state.marketRank, currentPrice: state.currentPrice, formatterUpdate }} />
       </CoinInfo>
     </Container>
